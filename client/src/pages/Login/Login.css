@@ -1,0 +1,185 @@
+.login {
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background: url("https://images.pexels.com/photos/6984650/pexels-photo-6984650.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940") no-repeat center center fixed;
+  background-size: cover;
+}
+
+.login .wrapper {
+  width: 850px;
+  height: 500px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.login .wrapper .left {
+  width: 425px;
+  height: 500px;
+  background-color: rgba(10, 26, 26, 0.5);
+  border-radius: 10px 0px 0px 10px;
+  border-right: 2px solid white;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.login .wrapper .left .loginButtons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.login .wrapper .left .loginButtons h1 {
+  color: white;
+}
+
+.login .wrapper .left .loginButtons .btn {
+  width: 150px;
+  height: 35px;
+  background-color: white;
+  margin: 10px 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.login .wrapper .left .loginButtons .btn .div-icon {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  max-width: 21px;
+  max-height: 21px;
+}
+
+.login .wrapper .left .loginButtons .btn .div-icon .icon {
+  height: 21px;
+  width: 21px;
+  margin-left: 5px;
+}
+
+.login .wrapper .left .loginButtons .btn .text {
+  color: white;
+  margin: auto;
+}
+
+.login .wrapper .left .loginButtons .facebook {
+  color: white !important;
+  background-color: #3b5998;
+}
+
+.login .wrapper .left .loginButtons .google {
+  color: white !important;
+  background-color: #db4437;
+}
+
+.login .wrapper .left .loginButtons .github {
+  color: white !important;
+  background-color: black;
+}
+
+.login .wrapper .right {
+  width: 425px;
+  height: 500px;
+  background-color: rgba(10, 26, 26, 0.5);
+  border-radius: 0 10px 10px 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.login .wrapper .right .form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.login .wrapper .right .form h1 {
+  color: white;
+}
+
+.login .wrapper .right .form input {
+  padding-left: 10px;
+  width: 200px;
+  height: 40px;
+  margin-top: 20px;
+  border-radius: 5px;
+  border: none;
+}
+
+.login .wrapper .right .form button {
+  margin-top: 20px;
+  width: 150px;
+  height: 35px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  background-color: #5800ff;
+}
+
+.login .wrapper .right .form .move-login {
+  margin-top: 18px;
+  color: white;
+  font-size: 12px;
+}
+
+.login .wrapper .right .form .move-login .link {
+  font-size: 14px;
+  color: #5800ff;
+  text-decoration: none;
+}
+/*# sourceMappingURL=Login.css.map */

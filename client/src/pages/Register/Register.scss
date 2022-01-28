@@ -1,0 +1,74 @@
+.register{
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url("https://images.pexels.com/photos/6984650/pexels-photo-6984650.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940") no-repeat center
+        center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    .wrapper{
+        width: 425px;
+        height: 500px;
+        background-color: rgba(10, 26, 26, 0.5);
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .form {
+            h1{
+                color: white;
+            }
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            input{
+                padding-left: 10px;
+                width: 200px;
+                height: 40px;
+                margin-top: 20px;
+                border-radius: 5px;
+                border: none;
+            }
+            button{
+                margin-top: 20px;
+                width: 150px;
+                height: 35px;
+                border: none;
+                border-radius: 5px;
+                color: white;
+                background-color: #5800FF;
+                cursor: pointer;
+            }
+            .message{    
+                margin: 10px 0;
+                .hide{
+                    display: none;
+                }
+                .show-success{
+                    display: block !important;
+                    color: greenyellow !important;
+                }
+                .show-fail{
+                    display: block !important;
+                    color:red !important;
+                }
+            }
+            .move-login{
+                margin-top: 18px;
+                color:white;
+                font-size: 12px;
+                .link{
+                    font-size: 14px;
+                    color: #5800FF;
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+}
