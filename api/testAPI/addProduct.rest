@@ -1,0 +1,13 @@
+POST http://localhost:5000/api/products
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZjM3MTM4NzdmN2FjNzQxMTEzNmRmMCIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY0MzY3ODM1OCwiZXhwIjoxNjQ0MTEwMzU4fQ.lPsRXZ5vkJIypLJgFshaS5itVQ_MTH8JF7Zpb5OqjRA
+
+{
+    "title":"Jerzees Nublend Joggers",
+    "desc":"7.2 oz., 60/40 cotton/polyester pre-shrunk fleece. Modern fit in a lighter weight, pill-resistant fleece. Differential rise for a better fit. Triple-needle stitched covered elastic waistband with external drawcord. Contrast-color drawcord and side entry pockets (all body colors include Charcoal Grey contrast detailing except Black Heather, which has Black). 1x1 ribbed cuffs with spandex for stretch and recovery.",
+    "img":"https://ugp-files-production.s3.us-east-2.amazonaws.com/product/jerzees-nublend-joggers-athletic-heather-front-1617961371.jpg",
+    "categories": ["men", "cotton", "Sweatshirt"],
+    "size":["XS","S","M","L","XL"],
+    "color":["Red", "Yellow", "Gray", "Blue", "White", "Black"],
+    "price":65
+}

@@ -28,7 +28,7 @@ authRouter.post('/login', async(req,res)=>{
       Originalpassword !== req.body.password && res.status(401).json('Wrong credential')
       const accessToken = jwt.sign({
         id:user._id,
-        isAdmin: user.idAdmin,  
+        isAdmin: user.isAdmin  
       }, process.env.SECRET_JWT, {expiresIn:'5d'})
       const {password, ...info} = user._doc;
       res.status(200).json({...info, accessToken})
