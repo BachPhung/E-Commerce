@@ -6,6 +6,10 @@ import { Announcement } from '../components/navbar/Announcement';
 import Navbar from '../components/navbar/Navbar';
 import { Newsletter } from '../components/Newsletter/Newsletter';
 import { mobile } from '../responsive';
+import { useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { publicRequest } from '../requestMethods';
 const Container = styled.div`
     
 `
@@ -102,41 +106,55 @@ const Button = styled.button`
     }
 `
 export const Product = () => {
+    const location = useLocation();
+    const id = (location.pathname.split('/')[2])
+    const [product, setProduct] = useState(null)
+    const [quantity, setQuantity] = useState(1)
+    const [color, setColor] = useState('')
+    const [size, setSize] = useState('')
+    useEffect(()=>{
+        const getProduct = async () => {
+            try{
+                const res = await publicRequest.get('/products/find/'+id)
+                console.log('res',res.data)
+                setProduct(res.data)
+            }
+            catch(err){
+                console.log(err)
+            }
+        }
+        getProduct()
+    },[id])
     return (
+        product && 
         <Container>
             <Navbar />
             <Announcement />
             <Wrapper>
                 <ImgContainer>
-                    <Image src="https://i.ibb.co/S6qMxwr/jean.jpg" />
+                    <Image src={product.img} />
                 </ImgContainer>
                 <InfoContainer>
-                    <Title>Denim Jumpsuit</Title>
-                    <Desc>5-pocket jeans with elastic washed cotton denim. High waist, zip fly and narrow legs.</Desc>
-                    <Price>20$</Price>
+                    <Title>{product.title}</Title>
+                    <Desc>{product.desc}</Desc>
+                    <Price>{product.price}</Price>
                     <FilterContainer>
                         <Filter>
                             <FilterTitle>Color</FilterTitle>
-                            <FilterColor color ="black"/>
-                            <FilterColor color ="darkblue"/>
-                            <FilterColor color ="gray"/>
+                            {product.color.map(c=><FilterColor onClick={()=>setColor(c)} key={c} color={`${c}`}/>)}
                         </Filter>
                         <Filter>
                             <FilterTitle>Size</FilterTitle>
-                            <FilterSize>
-                                <FilterSizeOption>XS</FilterSizeOption>
-                                <FilterSizeOption>S</FilterSizeOption>
-                                <FilterSizeOption>M</FilterSizeOption>
-                                <FilterSizeOption>L</FilterSizeOption>
-                                <FilterSizeOption>XL</FilterSizeOption>
+                            <FilterSize onChange={(e)=>setSize(e.target.value)}>
+                                {product.size.map(s=><FilterSizeOption key={s}>{s}</FilterSizeOption>)}
                             </FilterSize>
                         </Filter>
                     </FilterContainer>
                     <AddContainer>
                         <AmountContainer>
-                            <Remove style={{cursor:'pointer'}}/>
-                            <Amount>1</Amount>
-                            <Add style={{cursor:'pointer'}}/>
+                            <Remove onClick={()=>{quantity===1 ? setQuantity(1) : setQuantity(quantity-1)}} style={{cursor:'pointer'}}/>
+                            <Amount>{quantity}</Amount>
+                            <Add onClick={()=> setQuantity(quantity+1)} style={{cursor:'pointer'}}/>
                         </AmountContainer>
                         <Button>ADD TO CART</Button>
                     </AddContainer>
