@@ -1,5 +1,4 @@
 import { Add, Remove } from '@material-ui/icons';
-import React from 'react';
 import styled from 'styled-components';
 import { Footer } from '../components/Footer/Footer';
 import { Announcement } from '../components/navbar/Announcement';
@@ -7,8 +6,7 @@ import Navbar from '../components/navbar/Navbar';
 import { Newsletter } from '../components/Newsletter/Newsletter';
 import { mobile } from '../responsive';
 import { useLocation } from 'react-router-dom';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { publicRequest } from '../requestMethods';
 import { addProduct } from '../redux/cartRedux';
 import { useDispatch } from 'react-redux';
@@ -121,6 +119,8 @@ export const Product = () => {
                 const res = await publicRequest.get('/products/find/'+id)
                 console.log('res',res.data)
                 setProduct(res.data)
+                setColor(res.data.color[0])
+                setSize(res.data.size[0])
             }
             catch(err){
             }
@@ -128,6 +128,7 @@ export const Product = () => {
         getProduct()
     },[id])
     const handleAddProduct = () =>{
+        console.log("color, size", color, size);
          dispatch(addProduct({...product, quantity, color, size}))
     }
     return (

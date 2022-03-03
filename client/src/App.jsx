@@ -5,6 +5,7 @@ import { Login } from "./pages/Login/Login";
 import { Register } from "./pages/Register/Register";
 import { Cart } from "./pages/Cart";
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import Success from "./pages/Success";
 const App = () => {
   return (
     <Router>
@@ -26,6 +27,9 @@ const App = () => {
         </Route>
         <Route path='/register'>
           <Register/>
+        </Route>
+        <Route path='/success'>
+          <Success/>
         </Route>
       </Switch>
     </Router>

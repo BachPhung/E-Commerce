@@ -1,10 +1,17 @@
-import { Add, Remove } from '@material-ui/icons';
-import React from 'react';
-import styled from 'styled-components';
-import { Footer } from '../components/Footer/Footer';
-import { Announcement } from '../components/navbar/Announcement';
-import Navbar from '../components/navbar/Navbar';
-import { mobile } from '../responsive';
+import { Add, Remove } from '@material-ui/icons'
+import React, { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import styled from 'styled-components'
+import { Footer } from '../components/Footer/Footer'
+import { Announcement } from '../components/navbar/Announcement'
+import Navbar from '../components/navbar/Navbar'
+import { mobile } from '../responsive'
+import StripeCheckout from 'react-stripe-checkout'
+import { userRequest } from '../requestMethods'
+import { useHistory } from 'react-router-dom'
+
+const KEY = process.env.REACT_APP_STRIPE
+console.log(KEY)
 const Container = styled.div`
     
 `
@@ -30,7 +37,7 @@ const TopButton = styled.button`
     color: ${props => props.type === "filled" && "white"};
 `
 const TopTexts = styled.div`
-    ${mobile({display:'none'})}
+    ${mobile({ display: 'none' })}
 `
 const TopText = styled.span`
     text-decoration: underline;
@@ -40,7 +47,7 @@ const TopText = styled.span`
 const Bottom = styled.div`
     display: flex;
     justify-content: space-between;
-    ${mobile({flexDirection:'column'})}
+    ${mobile({ flexDirection: 'column' })}
 `
 const Info = styled.div`
     flex: 3;
@@ -48,7 +55,7 @@ const Info = styled.div`
 const Product = styled.div`
     display: flex;
     justify-content: space-between;
-    ${mobile({flexDirection:'column'})}
+    ${mobile({ flexDirection: 'column' })}
 `
 const ProductDetail = styled.div`
     flex: 2;
@@ -93,12 +100,12 @@ const ProductAmountContainer = styled.div`
 const ProductAmount = styled.span`
     font-size: 24px;
     margin: 5px;
-    ${mobile({margin:'5px 1px'})}
+    ${mobile({ margin: '5px 1px' })}
 `
 const ProductPrice = styled.span`
     font-size: 30px;
     font-weight: 200;
-    ${mobile({marginBottom:'20px'})}
+    ${mobile({ marginBottom: '20px' })}
 `
 const Hr = styled.hr`
     background-color: #eee;
@@ -122,8 +129,8 @@ const SummaryItem = styled.div`
     
 `
 const SummaryItemText = styled.span`
-    font-weight: ${props=>props.type ==='total' ? "500" : "200"};
-    font-size: ${props=>props.type ==='total' ? "24px" : "18px"};
+    font-weight: ${props => props.type === 'total' ? "500" : "200"};
+    font-size: ${props => props.type === 'total' ? "24px" : "18px"};
 `
 const SummaryItemPrice = styled.span`
     
@@ -137,6 +144,26 @@ const Button = styled.button`
     cursor: pointer;
 `
 export const Cart = () => {
+    const cart = useSelector(state => state.cart)
+    const [stripeToken, setStripeToken] = useState(null)
+    const history = useHistory()
+    const onToken = (token) =>{
+        setStripeToken(token)
+    }
+    useEffect(()=>{
+        const makeRequest = async () => {
+            try{
+                    const res = await userRequest.post('/checkout/payment',{
+                    tokenId: stripeToken.id,
+                    //amount: cart.total * 100
+                    amount: 100
+                })
+                history.push('/success', {data: res.data})
+            }
+            catch{}
+        }
+        stripeToken && makeRequest()
+    },[stripeToken, cart.total, history])
     return (
         <div>
             <Container>
@@ -147,59 +174,43 @@ export const Cart = () => {
                     <Top>
                         <TopButton>CONTINUE SHOPPING</TopButton>
                         <TopTexts>
-                            <TopText>Shopping Bag (2)</TopText>
+                            <TopText>Shopping Bag ({cart.quantity})</TopText>
                             <TopText>Your Wishlist (0)</TopText>
                         </TopTexts>
                         <TopButton type='filled'>CHECKOUT NOW</TopButton>
                     </Top>
                     <Bottom>
                         <Info>
-                            <Product>
-                                <ProductDetail>
-                                    <Image src="https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1614188818-TD1MTHU_SHOE_ANGLE_GLOBAL_MENS_TREE_DASHERS_THUNDER_b01b1013-cd8d-48e7-bed9-52db26515dc4.png?crop=1xw:1.00xh;center,top&resize=480%3A%2A" />
-                                    <Details>
-                                        <ProductName><b>Product:</b>JESSIE THUNDER SHOES</ProductName>
-                                        <ProductId><b>ID:</b>123456789</ProductId>
-                                        <ProductColor color="black" />
-                                        <ProductSize><b>Size:</b>41</ProductSize>
-                                    </Details>
-                                </ProductDetail>
-                                <PriceDetails>
-                                    <ProductAmountContainer>
-                                        <Add style={{ cursor: "pointer" }} />
-                                        <ProductAmount>2</ProductAmount>
-                                        <Remove style={{ cursor: "pointer" }} />
-                                    </ProductAmountContainer>
-                                    <ProductPrice>$ 30</ProductPrice>
-                                </PriceDetails>
-                            </Product>
+                            {cart.products.map((product) => (
+                                <Product>
+                                    <ProductDetail>
+                                        <Image src={product.img} />
+                                        <Details>
+                                            <ProductName><b>Product: </b>{product.title}</ProductName>
+                                            <ProductId><b>ID: </b>{product._id}</ProductId>
+                                            <ProductColor color={`${product.color}`} />
+                                            <ProductSize><b>Size: </b>{product.size}</ProductSize>
+                                        </Details>
+                                    </ProductDetail>
+                                    <PriceDetails>
+                                        <ProductAmountContainer>
+                                            <Add style={{ cursor: "pointer" }} />
+                                            <ProductAmount>{product.quantity}</ProductAmount>
+                                            <Remove style={{ cursor: "pointer" }} />
+                                        </ProductAmountContainer>
+                                        <ProductPrice>$ {product.price * product.quantity}</ProductPrice>
+                                    </PriceDetails>
+                                </Product>
+                            ))}
                             <Hr />
-                            <Product>
-                                <ProductDetail>
-                                    <Image src="https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1614188818-TD1MTHU_SHOE_ANGLE_GLOBAL_MENS_TREE_DASHERS_THUNDER_b01b1013-cd8d-48e7-bed9-52db26515dc4.png?crop=1xw:1.00xh;center,top&resize=480%3A%2A" />
-                                    <Details>
-                                        <ProductName><b>Product:</b>JESSIE THUNDER SHOES</ProductName>
-                                        <ProductId><b>ID:</b>123456789</ProductId>
-                                        <ProductColor color="black" />
-                                        <ProductSize><b>Size:</b>41</ProductSize>
-                                    </Details>
-                                </ProductDetail>
-                                <PriceDetails>
-                                    <ProductAmountContainer>
-                                        <Add style={{ cursor: "pointer" }} />
-                                        <ProductAmount>2</ProductAmount>
-                                        <Remove style={{ cursor: "pointer" }} />
-                                    </ProductAmountContainer>
-                                    <ProductPrice>$ 30</ProductPrice>
-                                </PriceDetails>
-                            </Product>
+
                         </Info>
 
                         <Summary>
                             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
                             <SummaryItem>
                                 <SummaryItemText>Subtotal</SummaryItemText>
-                                <SummaryItemPrice>$ 80</SummaryItemPrice>
+                                <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
                             </SummaryItem>
                             <SummaryItem>
                                 <SummaryItemText>Estimated Shipping</SummaryItemText>
@@ -213,7 +224,18 @@ export const Cart = () => {
                                 <SummaryItemText type='total'>Total</SummaryItemText>
                                 <SummaryItemPrice>$ 80</SummaryItemPrice>
                             </SummaryItem>
-                            <Button>CHECKOUT NOW</Button>
+                            <StripeCheckout
+                                name='Beauty Fashion'
+                                image='https://image.shutterstock.com/image-photo/image-260nw-1276267237.jpg'
+                                billingAddress
+                                shippingAddress
+                                description={`Your total is $${cart.total}`}
+                                amount={cart.total*100}
+                                token={onToken}
+                                stripeKey={KEY}
+                            >
+                                <Button>CHECKOUT NOW</Button>
+                            </StripeCheckout>
                         </Summary>
                     </Bottom>
                 </Wrapper>

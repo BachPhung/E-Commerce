@@ -1,5 +1,6 @@
 const stripeRouter = require('express').Router()
-const stripe = require('stripe')
+require('dotenv').config()
+const stripe = require('stripe')(process.env.SECRET_STRIPE)
 
 stripeRouter.post('/payment',async(req,res)=>{
     stripe.charges.create({
