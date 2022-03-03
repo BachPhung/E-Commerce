@@ -1,18 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Search, ShoppingCartOutlined } from '@material-ui/icons'
+import { Search, ShoppingCartOutlined } from '@material-ui/icons'
 import { Badge } from '@material-ui/core';
 import { mobile } from '../../responsive';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 const Container = styled.div`
     height: 60px;
-    ${mobile({height:'50px'})}
+    ${mobile({ height: '50px' })}
 `
 const Wrapper = styled.div`
     padding: 10px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    ${mobile({padding:"10px 0"})}
+    ${mobile({ padding: "10px 0" })}
 `
 const Left = styled.div`
     flex: 1;
@@ -23,7 +25,7 @@ const Left = styled.div`
 const Language = styled.div`
     font-size: 14px;
     cursor: pointer;
-    ${mobile({display:'none'})}
+    ${mobile({ display: 'none' })}
 `
 const SearchContainer = styled.div`
     border: 1px solid lightgray;
@@ -34,7 +36,7 @@ const SearchContainer = styled.div`
 const Input = styled.input`
     border: none;
     height: 22.5px;
-    ${mobile({width:'50px'})}
+    ${mobile({ width: '50px' })}
 `
 const Center = styled.div`
     flex: 1;
@@ -44,23 +46,26 @@ const Center = styled.div`
 const Logo = styled.h1`
     display: flex;
     justify-content: center;
-    ${mobile({fontSize:'24px', marginLeft:"8px"})}
+    ${mobile({ fontSize: '24px', marginLeft: "8px" })}
 `
 const Right = styled.div`
     flex: 1;
     text-align: center;
     display: flex;
     justify-content: flex-end;
-    ${mobile({justifyContent:'center', flex:2})}
+    ${mobile({ justifyContent: 'center', flex: 2 })}
 `
 const MenuItem = styled.div`
     font-size: 14px;
     cursor: pointer;
     margin-left: 25px;
-    ${mobile({fontSize:'12px', marginLeft:'10px'})}
+    ${mobile({ fontSize: '12px', marginLeft: '10px' })}
 `
 
 const Navbar = () => {
+    const quantity = useSelector(state => state.cart.quantity)
+    console.log('quantity: ', quantity);
+    console.log('price', useSelector(state => state.cart.total))
     return (
         <Container>
             <Wrapper>
@@ -68,7 +73,7 @@ const Navbar = () => {
                     <Language>EN</Language>
                     <SearchContainer>
                         <Input placeholder='Search' />
-                        <Search style={{color:"gray", fontSize:'16px', cursor:'pointer'}} />
+                        <Search style={{ color: "gray", fontSize: '16px', cursor: 'pointer' }} />
                     </SearchContainer>
                 </Left>
                 <Center>
@@ -77,11 +82,13 @@ const Navbar = () => {
                 <Right>
                     <MenuItem>REGISTER</MenuItem>
                     <MenuItem>SIGN IN</MenuItem>
-                    <MenuItem>
-                        <Badge badgeContent={0} color='secondary' showZero>
-                            <ShoppingCartOutlined/>
-                        </Badge>
-                    </MenuItem>
+                    <Link to='/cart'>
+                        <MenuItem>
+                            <Badge badgeContent={quantity} color='secondary' showZero>
+                                <ShoppingCartOutlined />
+                            </Badge>
+                        </MenuItem>
+                    </Link>
                 </Right>
             </Wrapper>
         </Container>

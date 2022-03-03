@@ -10,6 +10,8 @@ import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { publicRequest } from '../requestMethods';
+import { addProduct } from '../redux/cartRedux';
+import { useDispatch } from 'react-redux';
 const Container = styled.div`
     
 `
@@ -106,6 +108,7 @@ const Button = styled.button`
     }
 `
 export const Product = () => {
+    const dispatch = useDispatch()
     const location = useLocation();
     const id = (location.pathname.split('/')[2])
     const [product, setProduct] = useState(null)
@@ -120,11 +123,13 @@ export const Product = () => {
                 setProduct(res.data)
             }
             catch(err){
-                console.log(err)
             }
         }
         getProduct()
     },[id])
+    const handleAddProduct = () =>{
+         dispatch(addProduct({...product, quantity, color, size}))
+    }
     return (
         product && 
         <Container>
@@ -156,7 +161,7 @@ export const Product = () => {
                             <Amount>{quantity}</Amount>
                             <Add onClick={()=> setQuantity(quantity+1)} style={{cursor:'pointer'}}/>
                         </AmountContainer>
-                        <Button>ADD TO CART</Button>
+                        <Button onClick={()=>handleAddProduct()}>ADD TO CART</Button>
                     </AddContainer>
                 </InfoContainer>
             </Wrapper>
