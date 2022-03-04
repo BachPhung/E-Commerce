@@ -1,5 +1,5 @@
 import './Register.scss'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import axios from 'axios'
 import { useState } from 'react'
 import { AiOutlineCheck } from 'react-icons/ai'
@@ -15,7 +15,7 @@ export const Register = () => {
     const handleRegister = async (e) => {
         e.preventDefault()
         try {
-            await axios.post('http://localhost:8800/api/auth/register', { username, password })
+            await axios.post('http://localhost:5000/api/auth/register', { username, password })
             setSubmited(true)
             setUserName('')
             setPassWord('')
@@ -54,7 +54,7 @@ export const Register = () => {
                         }
                     </div>
                     <div className='move-login'>
-                        <i>In case you have had an account</i><strong> Sign in now</strong>
+                        <i>In case you have had an account</i><Link className='link' to='/login'><strong> Sign in now</strong></Link>
                     </div>
                 </form>
             </div>

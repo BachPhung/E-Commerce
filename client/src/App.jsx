@@ -6,6 +6,8 @@ import { Register } from "./pages/Register/Register";
 import { Cart } from "./pages/Cart";
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Success from "./pages/Success";
+import './index.scss'
+
 const App = () => {
   return (
     <Router>

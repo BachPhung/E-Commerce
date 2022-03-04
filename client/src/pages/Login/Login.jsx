@@ -1,11 +1,29 @@
 import './Login.scss'
-import { useState} from 'react'
+import { useState } from 'react'
 import { BsGoogle, BsGithub } from 'react-icons/bs'
 import { FaFacebookF } from 'react-icons/fa'
+import { login } from '../../redux/apiCalls'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useHistory } from 'react-router-dom'
+import styled from 'styled-components'
 export const Login = () => {
+    const dispatch = useDispatch()
+    const history = useHistory()
     const [username, setUserName] = useState('')
     const [password, setPassWord] = useState('')
-    
+    const { isFetching, error } = useSelector(state=>state.user)
+    const Error = styled.div`
+        color: red;
+        font-size: 14px;
+    `
+    const handleLogin = (e) => {
+        e.preventDefault()
+        try{
+            login(dispatch, {username, password})
+            history.push('/')
+        }
+        catch{}
+    }
     return (
         <div className='login'>
             <div className='wrapper'>
@@ -34,7 +52,7 @@ export const Login = () => {
                         </div>
                     </div>
                 </div>
-                <div className='right'>
+                <div className='right' onSubmit={handleLogin}>
                     <form className='form'>
                         <h1>Login</h1>
                         <input
@@ -51,9 +69,10 @@ export const Login = () => {
                             onChange={e => setPassWord(e.target.value)}
                             autoComplete='on'
                         ></input>
-                        <button>Login</button>
+                        <button type='submit' disabled={isFetching}>Login</button>
+                        {error && <Error>{error}</Error>}
                         <div className='move-login'>
-                            <i>New to application</i><strong> Sign up now</strong>
+                            <i>New to application</i><Link className='link' to='/register'><strong> Sign up now</strong></Link>
                         </div>
                     </form>
                 </div>
