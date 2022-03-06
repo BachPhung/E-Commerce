@@ -7,6 +7,7 @@ import { Cart } from "./pages/Cart";
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Success from "./pages/Success";
 import './index.scss'
+import PreView from "./components/preView/preView";
 
 const App = () => {
   return (
@@ -32,6 +33,9 @@ const App = () => {
         </Route>
         <Route path='/success'>
           <Success/>
+        </Route>
+        <Route path='/preview'>
+          <PreView/>
         </Route>
       </Switch>
     </Router>

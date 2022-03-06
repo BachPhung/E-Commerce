@@ -8,19 +8,19 @@ const UserSchema = new mongoose.Schema(
             unique:true,
             minlength:8
         },
-        email:{
-            type:String, 
-            //required:true,
-            unique:true
-        },
         password:{
             type:String,
             required:true
+        },
+        avatar:{
+            type:String,
+            default:null
         },
         isAdmin:{
             type: Boolean,
             default: false
         },
+
     },{timestamps:true}
 )
 UserSchema.plugin(validator)

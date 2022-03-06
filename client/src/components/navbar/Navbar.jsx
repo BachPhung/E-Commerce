@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Search, ShoppingCartOutlined } from '@material-ui/icons'
-import { Badge } from '@material-ui/core';
 import { mobile } from '../../responsive';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { ClickAwayListener, Button, Grow, Paper, Popper, MenuItem as MenuItemMUI, MenuList, Badge, Avatar } from '@material-ui/core';
+import Stack from '@mui/material/Stack';
 const Container = styled.div`
     height: 60px;
     ${mobile({ height: '50px' })}
@@ -53,6 +54,7 @@ const Right = styled.div`
     text-align: center;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     ${mobile({ justifyContent: 'center', flex: 2 })}
 `
 const MenuItem = styled.div`
@@ -60,12 +62,45 @@ const MenuItem = styled.div`
     cursor: pointer;
     margin-left: 25px;
     ${mobile({ fontSize: '12px', marginLeft: '10px' })}
+    z-index: 10 !important;
 `
 
 const Navbar = () => {
+    const [open, setOpen] = React.useState(false);
+    const anchorRef = React.useRef(null);
+
+    const handleToggle = () => {
+        setOpen((prevOpen) => !prevOpen);
+    };
+
+    const handleClose = (event) => {
+        if (anchorRef.current && anchorRef.current.contains(event.target)) {
+            return;
+        }
+
+        setOpen(false);
+    };
+
+    function handleListKeyDown(event) {
+        if (event.key === "Tab") {
+            event.preventDefault();
+            setOpen(false);
+        } else if (event.key === "Escape") {
+            setOpen(false);
+        }
+    }
+
+    // return focus to the button when we transitioned from !open -> open
+    const prevOpen = React.useRef(open);
+    React.useEffect(() => {
+        if (prevOpen.current === true && open === false) {
+            anchorRef.current.focus();
+        }
+
+        prevOpen.current = open;
+    }, [open]);
     const quantity = useSelector(state => state.cart.quantity)
-    console.log('quantity: ', quantity);
-    console.log('price', useSelector(state => state.cart.total))
+    const user = useSelector(state => state.user.currentUser)
     return (
         <Container>
             <Wrapper>
@@ -80,8 +115,66 @@ const Navbar = () => {
                     <Logo>BEAUTY</Logo>
                 </Center>
                 <Right>
-                    <MenuItem>REGISTER</MenuItem>
-                    <MenuItem>SIGN IN</MenuItem>
+                    {
+                        user === null && <>
+                            <Link className='link' to='/register'>
+                                <MenuItem>REGISTER</MenuItem>
+                            </Link>
+                            <Link className='link' to='/login'>
+                                <MenuItem>SIGN IN</MenuItem>
+                            </Link>
+                        </>
+                    }
+
+                    {user && <MenuItem>
+                        <Stack direction="row" spacing={2}>
+                            <div>
+                                <Button
+                                    ref={anchorRef}
+                                    id="composition-button"
+                                    aria-controls={open ? 'composition-menu' : undefined}
+                                    aria-expanded={open ? 'true' : undefined}
+                                    aria-haspopup="true"
+                                    onClick={handleToggle}
+                                >
+                                    <Avatar src='' />
+                                </Button>
+                                <Popper
+                                    open={open}
+                                    anchorEl={anchorRef.current}
+                                    role={undefined}
+                                    placement="bottom-start"
+                                    transition
+                                    disablePortal
+                                >
+                                    {({ TransitionProps, placement }) => (
+                                        <Grow
+                                            {...TransitionProps}
+                                            style={{
+                                                transformOrigin:
+                                                    placement === 'bottom-start' ? 'left top' : 'left bottom',
+                                            }}
+                                        >
+                                            <Paper>
+                                                <ClickAwayListener onClickAway={handleClose}>
+                                                    <MenuList
+                                                        autoFocusItem={open}
+                                                        id="composition-menu"
+                                                        aria-labelledby="composition-button"
+                                                        onKeyDown={handleListKeyDown}
+                                                    >
+                                                        <MenuItemMUI onClick={handleClose}>Profile</MenuItemMUI>
+                                                        <MenuItemMUI onClick={handleClose}>My account</MenuItemMUI>
+                                                        <MenuItemMUI onClick={handleClose}>Logout</MenuItemMUI>
+                                                    </MenuList>
+                                                </ClickAwayListener>
+                                            </Paper>
+                                        </Grow>
+                                    )}
+                                </Popper>
+                            </div>
+                        </Stack>
+                    </MenuItem>}
                     <Link to='/cart'>
                         <MenuItem>
                             <Badge badgeContent={quantity} color='secondary' showZero>

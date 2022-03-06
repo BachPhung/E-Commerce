@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Product from './Product';
 import styled from 'styled-components';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 const Container = styled.div`
     padding: 20px;
     display: flex;
+    justify-content: space-between;
     flex-wrap: wrap;
     z-index: 1;
 `
@@ -52,8 +54,8 @@ export const Products = ({ cat, filters, sort }) => {
     return (
         <Container>
             {cat 
-              ? filteredProducts.map((item) => <Product item={item} key={item.id} />)
-              : products.map((item) => <Product item={item} key={item.id} />)
+              ? filteredProducts.map((item) => <Link className='link' to={`/product/${item._id}`}><Product item={item} key={item._id} /></Link>)
+              : products.map((item) => <Link className='link' to={`/product/${item._id}`}><Product item={item} key={item._id} /></Link>)
         }
         </Container>
     )

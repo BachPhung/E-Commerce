@@ -20,16 +20,18 @@ const Wrapper = styled.div`
 `
 const ImgContainer = styled.div`
     flex: 1;
+    min-height: 80vh;
 `
 const Image = styled.img`
-    width: 100%;
-    height: 90vh;
+    width: 70%;
     object-fit: cover;
     ${mobile({height:'45vh'})}
+    z-index: 10 !important;
 `
 const InfoContainer = styled.div`
     flex: 1;
     padding: 0 50px;
+    min-height: 80vh;
     ${mobile({padding:'10px'})}
 
 `

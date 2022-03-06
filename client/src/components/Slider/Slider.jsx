@@ -73,12 +73,13 @@ const InfoContainer = styled.div`
 `
 export const Slider = () => {
     const [slideIndex, setSlideIndex] = useState(0)
+    const length = sliderItems.length
     const handleClick = (direction) => {
         if (direction === "left") {
-            setSlideIndex(slideIndex > 0 ? slideIndex - 1 : 2)
+            setSlideIndex(slideIndex === 0 ? length - 1 : slideIndex - 1)
         } 
         else if (direction==='right') {
-            setSlideIndex( slideIndex < 2 ? slideIndex + 1 : 0)
+            setSlideIndex(slideIndex === length - 1 ? 0 : slideIndex + 1)
         }
     }
     return (

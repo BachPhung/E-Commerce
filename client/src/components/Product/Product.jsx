@@ -39,9 +39,10 @@ const Circle = styled.div`
     position: absolute;
 `
 const Image = styled.img`
-    height: 75%;
+    height: 60%;
     display: flex;
     justify-content: center;
+    object-fit: cover;
     z-index: 2;
 `
 const Icon = styled.div`
