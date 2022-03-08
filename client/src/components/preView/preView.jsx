@@ -3,6 +3,7 @@ import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/
 import app from '../../redux/firebase'
 import { addProduct } from '../../redux/cartRedux';
 import { useDispatch } from 'react-redux';
+import { Avatar } from '@material-ui/core';
 const PreView = () => {
     const dispatch = useDispatch()
     const [avatar, setAvatar] = useState()
@@ -56,13 +57,13 @@ const PreView = () => {
                 // Handle unsuccessful uploads
             },
             () => {
-              // Handle successful uploads on complete
-              // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-              getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                  console.log('file available at: ', downloadURL);
-                const product = { ...inputs, img: downloadURL, categories: cat };
-                addProduct(product, dispatch);
-              });
+                // Handle successful uploads on complete
+                // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    console.log('file available at: ', downloadURL);
+                    const product = { ...inputs, img: downloadURL, categories: cat };
+                    addProduct(product, dispatch);
+                });
             }
         );
     }
@@ -70,13 +71,17 @@ const PreView = () => {
         <div>
             <h1>Hello</h1>
             <form onSubmit={handleClick}>
-                <label>Upload product image: </label>
+                <label>Upload avatar: </label>
                 <input type='file' onChange={handlePreviewAvatar} />
                 <label>Title: </label>
                 <input name='title' onChange={handleChange} type='text' />
                 <label>Desc: </label>
                 <input name='desc' onChange={handleChange} type='text' />
-                {avatar && (<img src={avatar.preview} alt='preview-img' width='80%' />)}
+                {/* {avatar && (<img src={avatar.preview} alt='preview-img' width='80%' />)} */}
+                {avatar && <Avatar
+                    src={avatar.preview}
+                    style={{ height: '500px', width: '500px' }}
+                />}
                 <button type='submit' className='addProductButton'>Create</button>
             </form>
         </div>
