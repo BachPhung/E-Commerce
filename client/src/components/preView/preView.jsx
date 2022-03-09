@@ -5,6 +5,7 @@ import { addProduct } from '../../redux/cartRedux';
 import { useDispatch } from 'react-redux';
 import { Avatar, Input, TextField, Button, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
 import './preView.scss'
+import { userRequest } from '../../requestMethods';
 const PreView = () => {
     const dispatch = useDispatch()
     const [avatar, setAvatar] = useState()
@@ -61,8 +62,10 @@ const PreView = () => {
                 // For instance, get the download URL: https://firebasestorage.googleapis.com/...
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                     console.log('file available at: ', downloadURL);
-                    const product = { ...inputs, img: downloadURL, categories: cat };
-                    addProduct(product, dispatch);
+                    setInputs({...inputs,img: downloadURL})
+                    // const product = { ...inputs, img: downloadURL, categories: cat };
+                    addProduct(inputs, dispatch);
+                    userRequest.post('/products',inputs).then(res=>console.log(res.data))
                 });
             }
         );
@@ -86,7 +89,7 @@ const PreView = () => {
                         placeholder="XS, S, ..."
                         variant="filled"
                         size="small"
-                        name='title'
+                        name='size'
                         onChange={handleChange}
                         type='text'
                         variant="standard"
@@ -99,7 +102,7 @@ const PreView = () => {
                         placeholder="Description"
                         variant="filled"
                         size="small"
-                        name='title'
+                        name='desc'
                         onChange={handleChange}
                         type='text'
                         variant="standard"
@@ -112,7 +115,7 @@ const PreView = () => {
                         placeholder="T-shirt, Women, ..."
                         variant="filled"
                         size="small"
-                        name='title'
+                        name='categories'
                         onChange={handleChange}
                         type='text'
                         variant="standard"
@@ -125,7 +128,7 @@ const PreView = () => {
                         placeholder="Yellow, Red, ..."
                         variant="filled"
                         size="small"
-                        name='title'
+                        name='color'
                         onChange={handleChange}
                         type='text'
                         variant="standard"
@@ -138,20 +141,7 @@ const PreView = () => {
                         placeholder="Number"
                         variant="filled"
                         size="small"
-                        name='title'
-                        onChange={handleChange}
-                        type='number'
-                        variant="standard"
-                        required
-                    />
-                    <TextField
-                        className='input-element'
-                        label="Desc"
-                        id="filled-size-small"
-                        placeholder="Description"
-                        variant="filled"
-                        size="small"
-                        name='title'
+                        name='price'
                         onChange={handleChange}
                         type='text'
                         variant="standard"
@@ -176,7 +166,7 @@ const PreView = () => {
                 <div className='right'>
                 {avatar && <Avatar
                     src={avatar.preview}
-                    style={{ height: '500px', width: '500px' }}
+                    style={{ height: '500px', width: '500px', border:'2px solid black' }}
                 />}
                 </div>
             </div>
